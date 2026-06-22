@@ -8,16 +8,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 from PIL import Image
 import torchvision.transforms as transforms
-import streamlit as str  # Streamlit UI import
+import streamlit as st  # Standard Global Alias Fixed
 
 # =====================================================================
 # STREAMLIT UI PAGE SETUP
 # =====================================================================
-str.set_page_config(page_title="Industrial Sound AI", page_icon="⚙️", layout="wide")
-str.title("⚙️ Edge-Vision ViT Adapter for Industrial Fault Detection")
-str.markdown("This system processes machine sound frequencies as **visual maps** to identify mechanical damage in real-time.")
+st.set_page_config(page_title="Industrial Sound AI", page_icon="⚙️", layout="wide")
+st.title("⚙️ Edge-Vision ViT Adapter for Industrial Fault Detection")
+st.markdown("This system processes machine sound frequencies as **visual maps** to identify mechanical damage in real-time.")
 
-# Hardware check for Edge Compute Simulation
 # Hardware target calculation for Edge Compute Simulation
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -29,10 +28,11 @@ st.sidebar.metric(
     delta="GPU Accelerated" if torch.cuda.is_available() else "Standard Core"
 )
 st.sidebar.markdown("---")
+
 # =====================================================================
 # MODEL INITIALIZATION & FREEZING (Cached for Fast Web Speed)
 # =====================================================================
-@str.cache_resource
+@st.cache_resource
 def load_industrial_adapter_model():
     # Load genuine Google Vision Transformer (ViT)
     pretrained_weights = ViT_B_16_Weights.DEFAULT
@@ -102,23 +102,23 @@ def generate_spectrogram_and_tensor(audio_file):
 # =====================================================================
 # STREAMLIT USER INTERACTION INTERFACE
 # =====================================================================
-uploaded_file = str.file_uploader("📂 Upload Mechanical Sound File (.wav format)", type=["wav"])
+uploaded_file = st.file_uploader("📂 Upload Mechanical Sound File (.wav format)", type=["wav"])
 
 if uploaded_file is not None:
-    str.audio(uploaded_file, format='audio/wav')
+    st.audio(uploaded_file, format='audio/wav')
     
     # Setup columns for clean web view layout
-    col1, col2 = str.columns([1, 1])
+    col1, col2 = st.columns(2)
     
     with col1:
-        str.subheader("📊 Acoustic Signal Inspection")
-        with str.spinner("Decomposing audio signal to 2D matrix spatial grid..."):
+        st.subheader("📊 Acoustic Signal Inspection")
+        with st.spinner("Decomposing audio signal to 2D matrix spatial grid..."):
             # Compute spectrogram plot and tensor input
             input_tensor, spectrogram_figure = generate_spectrogram_and_tensor(uploaded_file)
-            str.pyplot(spectrogram_figure)
+            st.pyplot(spectrogram_figure)
             
     with col2:
-        str.subheader("🧠 Embedded AI Decision Engine")
+        st.subheader("🧠 Embedded AI Decision Engine")
         
         # Performance Inference Tracking
         import time
@@ -132,15 +132,15 @@ if uploaded_file is not None:
         
         # Display Decision Outputs based on IDs
         if predicted_class == 0:
-            str.success("🟢 **SYSTEM STATUS: HEALTHY / NORMAL**")
-            str.markdown("No significant frequency deviations found. Bearing operation within standard physics bounds.")
+            st.success("🟢 **SYSTEM STATUS: HEALTHY / NORMAL**")
+            st.markdown("No significant frequency deviations found. Bearing operation within standard physics bounds.")
         elif predicted_class == 1:
-            str.warning("🟡 **SYSTEM STATUS: WARNING (WEAR DETECTED)**")
-            str.markdown("Acoustic anomaly detected. Friction profiles indicate mechanical degradation. Schedule standard maintenance.")
+            st.warning("🟡 **SYSTEM STATUS: WARNING (WEAR DETECTED)**")
+            st.markdown("Acoustic anomaly detected. Friction profiles indicate mechanical degradation. Schedule standard maintenance.")
         else:
-            str.error("🔴 **SYSTEM STATUS: CRITICAL DAMAGE**")
-            str.markdown("Severe internal alignment error or damage imminent. **Stop machine operations immediately** to prevent failure.")
+            st.error("🔴 **SYSTEM STATUS: CRITICAL DAMAGE**")
+            st.markdown("Severe internal alignment error or damage imminent. **Stop machine operations immediately** to prevent failure.")
             
         # Display real edge latency statistics
-        str.metric(label="⚡ Vision Transformer Adapter Latency", value=f"{latency:.2f} ms")
-        str.caption("Note: Low response latency is due to frozen base weights and bottleneck parameter tuning.")
+        st.metric(label="⚡ Vision Transformer Adapter Latency", value=f"{latency:.2f} ms")
+        st.caption("Note: Low response latency is due to frozen base weights and bottleneck parameter tuning.")
