@@ -8,7 +8,19 @@ import numpy as np
 import matplotlib.pyplot as plt
 from PIL import Image
 import torchvision.transforms as transforms
-import streamlit as st  # Standard Global Alias Fixed
+import streamlit as st  
+
+# =====================================================================
+# GLOBAL STABILITY SEED SYSTEM (Prevents Prediction Fluctuations)
+# =====================================================================
+# This core block forces PyTorch, Numpy, and CUDA architectures to produce
+# 100% deterministic outputs, locking consistency across identical uploads.
+torch.manual_seed(42)
+np.random.seed(42)
+if torch.cuda.is_available():
+    torch.cuda.manual_seed_all(42)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
 
 # =====================================================================
 # STREAMLIT UI PAGE SETUP
