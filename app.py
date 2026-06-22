@@ -18,10 +18,17 @@ str.title("⚙️ Edge-Vision ViT Adapter for Industrial Fault Detection")
 str.markdown("This system processes machine sound frequencies as **visual maps** to identify mechanical damage in real-time.")
 
 # Hardware check for Edge Compute Simulation
+# Hardware target calculation for Edge Compute Simulation
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-str.sidebar.subheader("Edge Node Hardware Configuration")
-str.sidebar.info(f"Computing Device: **{str.sidebar.text(device._type.upper()) if hasattr(device, '_type') else str.sidebar.text(str(device).upper())}**")
 
+# Professional Industry-Standard Sidebar Panel Execution
+st.sidebar.markdown("### 🎛️ Edge Node Configuration")
+st.sidebar.metric(
+    label="Active Processor Framework", 
+    value=str(device).upper(), 
+    delta="GPU Accelerated" if torch.cuda.is_available() else "Standard Core"
+)
+st.sidebar.markdown("---")
 # =====================================================================
 # MODEL INITIALIZATION & FREEZING (Cached for Fast Web Speed)
 # =====================================================================
