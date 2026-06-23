@@ -27,7 +27,7 @@ if torch.cuda.is_available():
 # =====================================================================
 st.set_page_config(page_title="Industrial Sound AI", page_icon="⚙️", layout="wide")
 st.title("⚙️ Edge-Vision ViT Adapter for Industrial Fault Detection")
-st.markdown("This system processes machine sound frequencies as **visual maps** to identify mechanical damage in real-time.")
+st.markdown("This system processes machine sound frequencies as **visual maps** to identify mechanical or electrical damage in real-time.")
 
 # Hardware target calculation for Edge Compute Simulation
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -145,10 +145,10 @@ if uploaded_file is not None:
         # Display Decision Outputs based on IDs
         if predicted_class == 0:
             st.success("🟢 **SYSTEM STATUS: HEALTHY / NORMAL**")
-            st.markdown("No significant frequency deviations found. Bearing operation within standard physics bounds.")
+            st.markdown("No significant frequency deviations found. Machine operating within normal parameters")
         elif predicted_class == 1:
             st.warning("🟡 **SYSTEM STATUS: WARNING (WEAR DETECTED)**")
-            st.markdown("Acoustic anomaly detected. Friction profiles indicate mechanical degradation. Schedule standard maintenance.")
+            st.markdown("Acoustic anomaly detected. No abnormal vibrations detected.")
         else:
             st.error("🔴 **SYSTEM STATUS: CRITICAL DAMAGE**")
             st.markdown("Severe internal alignment error or damage imminent. **Stop machine operations immediately** to prevent failure.")
